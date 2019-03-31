@@ -62,6 +62,102 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-leetcode刷题总结（一）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/31/leetcode刷题总结（一）/" class="article-date">
+  <time datetime="2019-03-31T13:19:13.506Z" itemprop="datePublished">2019-03-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="leetcode刷题总结（一）"><a href="#leetcode刷题总结（一）" class="headerlink" title="leetcode刷题总结（一）"></a>leetcode刷题总结（一）</h1><p>第一题是<a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array/" target="_blank" rel="noopener">26. Remove Duplicates from Sorted Array</a></p>
+<p>第二题是<a href="https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/" target="_blank" rel="noopener">82. Remove Duplicates from Sorted List II</a></p>
+<p>第三题是<a href="https://leetcode.com/problems/remove-element/" target="_blank" rel="noopener">27. Remove Element</a></p>
+<p>第四题是<a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/" target="_blank" rel="noopener">80. Remove Duplicates from Sorted Array II</a></p>
+<p>第五题是<a href="https://leetcode.com/problems/1-bit-and-2-bit-characters/" target="_blank" rel="noopener">717. 1-bit and 2-bit Characters</a></p>
+<p>这就是一周我做的所有的题了，这些题都有一个共同的特点就是他们（其实第五题还不太明显）前四道题都是去除掉数组中的某些元素，而且数组还都是有序的这就很好想了<strong>数组是有序的，这就有一个很重要的条件就是，重复的元素都挨着</strong><br>这是我的第三题的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int removeElement(int[] nums, int val) &#123;</span><br><span class="line">        int length = 0;</span><br><span class="line">        for (int i = 0; i &lt; nums.length; i++) &#123;</span><br><span class="line">            if (nums[i] == val)&#123;</span><br><span class="line">                // length++;</span><br><span class="line">                continue;  </span><br><span class="line">            &#125; </span><br><span class="line">            if (nums[i] != val) &#123;</span><br><span class="line">                // System.out.println(i + &quot; &quot; + length);</span><br><span class="line">                nums[length++] = nums[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后其它的题都以此类推嘛（我是先做完的一二三题）。</p>
+<p>直到遇到了第四题我遇上了困难，这道题也是要去除重复的，但是它要求要去除超过三次的元素。刚拿到这道题我首先想到的是，那就用计数器喽，用一个变量来看数组中元素出现的次数。但是发现这种方法并不好用。于是我就考虑了一下通过HashMap来储存数组中元素出现的次数。然后这次成了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">import java.util.Hashtable;</span><br><span class="line">class Solution &#123;</span><br><span class="line">   public int removeDuplicates(int[] nums) &#123;</span><br><span class="line">        int length = 0;</span><br><span class="line">        Hashtable&lt;Integer,Integer&gt; table = new Hashtable(nums.length);</span><br><span class="line">        for (int i = 0; i &lt; nums.length; i++) &#123;</span><br><span class="line">            if (!table.containsKey(nums[i])) &#123;</span><br><span class="line">                System.out.println(nums[i]);</span><br><span class="line">                nums[length++] = nums[i];</span><br><span class="line">                table.put(nums[i], 1);</span><br><span class="line">            &#125; else if (table.get(nums[i]) &lt; 2) &#123;</span><br><span class="line">                nums[length++] = nums[i];</span><br><span class="line">                System.out.println(nums[i]);</span><br><span class="line">                table.put(nums[i], table.get(nums[i]) + 1);</span><br><span class="line">            &#125;</span><br><span class="line">           </span><br><span class="line">//             if (sum &lt; 2 || nums[i] ) &#123;</span><br><span class="line">//                 System.out.println(nums[i - 1] + &quot; &quot; + length);</span><br><span class="line">//                 nums[length++] = nums[i - 1];</span><br><span class="line">//             &#125;</span><br><span class="line">//             if (nums[i] == nums[i - 1]) &#123;</span><br><span class="line">//                 sum++;  </span><br><span class="line">//             &#125;</span><br><span class="line">//             if (nums[i] != nums[i - 1]) &#123;</span><br><span class="line">//                 nums[length++] = nums[i];</span><br><span class="line">//                 sum = 0;</span><br><span class="line">//             &#125;</span><br><span class="line">                </span><br><span class="line">        &#125;</span><br><span class="line">        return length;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>不过后来看了下评论区发现有更好的解法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public int removeDuplicates(int[] nums) &#123;</span><br><span class="line">    if (nums.length == 0) &#123;return 0;&#125;</span><br><span class="line">    int pointer = 0, flag = 0;</span><br><span class="line">    for (int i = 1; i &lt; nums.length; i++) &#123;</span><br><span class="line">        if (nums[i] == nums[i - 1] &amp;&amp; flag == 0) &#123;</span><br><span class="line">            flag = 1;</span><br><span class="line">            pointer++;</span><br><span class="line">        &#125; else if (nums[i] != nums[i - 1]) &#123;</span><br><span class="line">            flag = 0;</span><br><span class="line">            pointer++;</span><br><span class="line">        &#125;</span><br><span class="line">        nums[pointer] = nums[i];</span><br><span class="line">    &#125;</span><br><span class="line">    return pointer + 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>它和我最大的不同就是它使用了flag来判断元素出现的次数。后来这个思路我用到了第五题上。</p>
+<p>第五题它是这样的，他给一个数组，数组里面的元素都是0和1，这个数组里面的元素只能组成元组11、10或者0，然后判断这个数组最后的元组是否为0。首先拿到这道题，我们练习的不是那些算法或者数据结构所以这道题用到的<strong>最多就是遍历或者递归，还有一个关键点就是如果前一个元素为1那么后一个元素是几都无所谓</strong>。<br>然后我就做出来了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public boolean isOneBitCharacter(int[] bits) &#123;</span><br><span class="line">        boolean flag = false;</span><br><span class="line">        for (int i = 0; i &lt; bits.length - 1; i++) &#123;</span><br><span class="line">            if (flag) &#123;</span><br><span class="line">                flag = false;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            if (bits[i] == 1) &#123;</span><br><span class="line">                flag = true;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (flag) return false;</span><br><span class="line">        else if (bits[bits.length - 1] == 0) return true;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/31/leetcode刷题总结（一）/" data-id="cjtwychen0002r8vcuoo5whyq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-final finally finalize它们之间的区别" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/31/final finally finalize它们之间的区别/" class="article-date">
+  <time datetime="2019-03-31T12:41:02.090Z" itemprop="datePublished">2019-03-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="final-finally-finalize它们之间的区别"><a href="#final-finally-finalize它们之间的区别" class="headerlink" title="final finally finalize它们之间的区别"></a>final finally finalize它们之间的区别</h1><h2 id="final"><a href="#final" class="headerlink" title="final"></a>final</h2><p>final可以修饰类、方法、变量。final修饰的类代表不可继承，final修饰的常量不能被修改，final修饰的方法不能被重写</p>
+<ul>
+<li>把方法或类声名为final，可以明确告诉调用者，这些行为是不允许的。这可以有效避免API使用者更改基础功能，某种程度上来讲，这也是保证平台安全的必要手段</li>
+<li>使用final修饰参数或者变量，也可以清楚的避免意外赋值导致的编译错误</li>
+<li>final变量产生了某种程度的不可变(immutable)的效果，所以，可以用于保护只读数据，尤其在并发编程中，因为不能再赋值final变量，有利于减少额外同步开销，也可以省去一些<strong>防御性拷贝</strong>的必要</li>
+</ul>
+<p>final可能还有性能好处</p>
+<h2 id="finally"><a href="#finally" class="headerlink" title="finally"></a>finally</h2><p>finally是Java保证重点代码一定被执行的一种机制。我们可以通过try-finally或者try-catch-finally来进行关闭JDBC连接、保证释放锁、或者确保关闭文件</p>
+<p>实际上对于需要关闭的连接等资源，更推荐使用Java 7 中添加的try-with-resources<br>另外注意这个代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">  // do something</span><br><span class="line">  System.exit(1);</span><br><span class="line">&#125; finally&#123;</span><br><span class="line">  System.out.println(“Print from finally”);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个代码里面finally里面的代码永远是不会执行的，这是一个特例</p>
+<h2 id="finalize"><a href="#finalize" class="headerlink" title="finalize"></a>finalize</h2><p>finalize是java.lang.Object的一个方法，它的设计目的是保证对象在被垃圾收集完之前完成特定资源的回收。在JDK9中开始被标记为deprecated</p>
+<p>如果没有特别的原因不要实现finalize方法，也不要指望它进行资源回收。这是因为我们无法保证finalize在哪一时刻执行，执行的是否符合预期。使用不当会影响性能，导致程序死锁挂起。回收资源最好使用try-with-resources 或者 try-finally机制，如果确实要额外处理，可以考虑Java提供的Cleaner机制或者其他替代方法。</p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><ol>
+<li>注意final不是immutable，<strong>final并不等同于immutable</strong>，比如下面的代码：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">final List&lt;String&gt; strList = new ArrayList&lt;&gt;();</span><br><span class="line">strList.add(&quot;Hello&quot;);</span><br><span class="line">strList.add(&quot;world&quot;);  </span><br><span class="line">List&lt;String&gt; unmodifiableStrList = List.of(&quot;hello&quot;, &quot;world&quot;);</span><br><span class="line">unmodifiableStrList.add(&quot;again&quot;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>final只能约束strList这个引用不可以被赋值，但是strList对象行为不被final影响，添加元素等操作行为完全是正常的。如果我们真的要求对象是不可变的，那么需要相应的类支持不可变的行为。List.of方法本身创建的就是不可变List，最后的add会抛出异常</p>
+<p><strong>注意：List.of方法在Oracle JDK 1.8中是不存在的这个方法在Open JDK 里面是有的</strong><br>Immutable在很多情况是非常有用的，某种意义上来讲，Java语言目前没有原生不可变的支持，如果要实现immutable的类，我们需要做到：</p>
+<ul>
+<li>将class自身声名为final，这样别人就不能扩展来绕过限制了。</li>
+<li>将所有成员变量定义为private和final，并且不实现setter方法</li>
+<li>通常构造对象时，成员变量使用深度拷贝来初始化，而不是直接赋值，这是一种防御措施，因为我们无法确定输入对象不被其他人修改</li>
+<li>如果确实需要实现getter方法，或者其他可能返回内部状态的方法，使用copy-on-write原则，创建私有copy</li>
+</ul>
+<p>关于setter/getter方法，最好是确定有需要时再实现。</p>
+<ol start="2">
+<li>finalize真的那么不堪？<br>finalize的执行是和垃圾收集关联在一起的，一旦实现了非空的finalize方法，就会导致相应对象回收呈现数量级上的变慢。因为，finalize被设计成在对象被垃圾回收前调用，这就意味着实现了finalize方法的对象是个“特殊公民”，JVM要对它进行额外处理。finalize本质上成为了快速回收的阻碍者，可能导致我们的对象经过多个垃圾收集周期才能被回收。也许我们用System.runFinalization()告诉JVM积极一点，但是问题在于，这还是不可预测的、不能保证的，所以本质上还是不能指望。实践中，因为finalize拖慢垃圾收集，导致对象大量堆积，这也是一种典型OOM的原因。</li>
+</ol>
+<p>从另一个角度，我们要确保回收资源就是因为资源都是有限的，垃圾收集时间不可预测，可能会极大加剧资源占用。这意味着对于消耗非常高的高频资源，千万不能指望finalize去承担资源释放的主要职责，最多让finalize作为最后的“守门员”，况且它已经暴露了如此多的问题。所以我们最好资源用完即释放，或者利用资源池来尽量重用。我们来看截取自Java.lang.ref.Finalizer中的一段源代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">private void runFinalizer(JavaLangAccess jla) &#123;</span><br><span class="line">//  ... 省略部分代码</span><br><span class="line">try &#123;</span><br><span class="line">   Object finalizee = this.get(); </span><br><span class="line">   if (finalizee != null &amp;&amp; !(finalizee instanceof java.lang.Enum)) &#123;</span><br><span class="line">      jla.invokeFinalize(finalizee);</span><br><span class="line">      // Clear stack slot containing this variable, to decrease</span><br><span class="line">      // the chances of false retention with a conservative GC</span><br><span class="line">      finalizee = null;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125; catch (Throwable x) &#123; &#125;</span><br><span class="line">   super.clear(); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在这个catch里面它捕获到异常之后没有抛出来，<strong>Throwabe是被生吞了的！</strong>也就意味着一旦出现异常或者出错，我们也得不到任何有效信息。况且，Java在finalize阶段也没有好的方式处理任何信息，不然更加不可预测</p>
+<ol start="3">
+<li>有什么机制可以替换finalize<br>Java平台目前在逐步使用java.lang.ref.Cleaner来替换掉原有的finalize实现。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/31/final finally finalize它们之间的区别/" data-id="cjtwycheo0003r8vcjoq19dvf" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Red Hat6翻译文档" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/03/31/Red Hat6翻译文档/" class="article-date">
@@ -93,7 +189,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/31/Red Hat6翻译文档/" data-id="cjtww90nv0001l0vcpr75dgdx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/31/Red Hat6翻译文档/" data-id="cjtwych970000r8vctivt9pvj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -129,7 +225,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/31/test-my-site/" data-id="cjtww90nf0000l0vceohhh1yf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/31/test-my-site/" data-id="cjtwychel0001r8vcgpf89lnu" class="article-share-link">Share</a>
       
       
     </footer>
@@ -174,7 +270,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/31/hello-world/" data-id="cjtww90o80002l0vcpfr5e3oa" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/31/hello-world/" data-id="cjtwychep0004r8vc6zz6o17o" class="article-share-link">Share</a>
       
       
     </footer>
@@ -213,6 +309,14 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/03/31/leetcode刷题总结（一）/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/31/final finally finalize它们之间的区别/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2019/03/31/Red Hat6翻译文档/">(no title)</a>
